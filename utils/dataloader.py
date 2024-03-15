@@ -1,9 +1,6 @@
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 import os
-import sys
-from collections import defaultdict
 import random
 
 class dtLoader:
@@ -169,15 +166,6 @@ def createClasses(window_list, kick_count_list, sensors, diff):
 
     path = "drive/MyDrive/Smart Monitoring for Biomedical Applications/Datasets/Time_Domain_Processed/Randomly_Dropped_Windows/"
     os.mkdir(path)
-    # for filename in os.listdir(path):
-    #     file_path = os.path.join(path, filename)
-    #     try:
-    #         if os.path.isfile(file_path) or os.path.islink(file_path):
-    #             os.unlink(file_path)
-    #         elif os.path.isdir(file_path):
-    #             shutil.rmtree(file_path)
-    #     except Exception as e:
-    #         print('Failed to delete %s. Reason: %s' % (file_path, e))
     w_num = 0
     classes = defaultdict(list)
     for i in range(len(kick_count_list)):
