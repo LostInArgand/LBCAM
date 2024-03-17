@@ -49,17 +49,21 @@ class dtLoader:
         print("Length of dataframe : ", n//self.SAMPLE_FREQ, " seconds")
 
         count = 0 # A variable to debounce the butten press
+        # n -= 10 * self.SAMPLE_FREQ
+        # if n <= 8 * self.SAMPLE_FREQ:
+        #     return 0
         cum_sum = np.zeros(n, dtype=np.int8)
-        for i in range(10 * self.SAMPLE_FREQ, n - 10 * self.SAMPLE_FREQ):
-            if df["state"][i] == 0:
-                count += 1
-                cum_sum[i] = cum_sum[i - 1]
-            elif df["state"][i] >= 3:
+        for i in range(1, n):
+            if df["state"][i] >= 3:
                 if count >= 8:
                     cum_sum[i] = cum_sum[i - 1] + 1
                 else:
                     cum_sum[i] = cum_sum[i - 1]
                 count = 0
+            # if df["state"][i] == 0:
+            else:
+                count += 1
+                cum_sum[i] = cum_sum[i - 1]
         
         df["cum_sum"] = cum_sum
 
@@ -104,7 +108,7 @@ class dtLoader:
 
             i += self.STRIDE * self.SAMPLE_FREQ
 
-        return cum_sum[n - 10 * self.SAMPLE_FREQ - 1]
+        return cum_sum[n -  1]
 
     def split_windows(self):
 
@@ -147,6 +151,7 @@ class dtLoader:
 
 
         assert(len(self.window_list) == len(self.kick_count_list))
+        assert(min(self.kick_count_list) >= 0)
         return counts
 
     def remove_DC(self, u_window):
